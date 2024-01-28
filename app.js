@@ -91,10 +91,33 @@ app.route("/articles/:articleTitle")
     .put((req,res)=>{
         Article.update(
             {title: req.params.articleTitle},
-            {title: req.body.title,content: req.body.content}
+            {title: req.body.title,
+             content: req.body.content},
+             {overwrite:true}
         )
+        .then(()=>{console.log("update success")})
+        .catch((err)=>{console.log(err)});
     })
 
+    .patch((req,res)=>{
+        Article.update(
+            {title: req.params.articleTitle},
+            {$set: req.body},
+        )
+        .then(()=>{console.log("update success")})
+        .catch((err)=>{console.log(err)});
+    })
+
+    .delete((req,res)=>{
+        Article.deleteOne(
+            {title: req.params.articleTitle}
+        )
+        .then(()=>{console.log("delete success")})
+        .catch((err)=>{console.log(err)});
+    });
+
+
+    
 
 app.listen("3000",()=>{
     console.log("Server started on port 3000");
